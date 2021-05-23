@@ -20,5 +20,6 @@ app.use(bodyParser.json());
 
 app.use('/api/signUp',require('./router/signUp'));
 app.use('/api/signIn',require('./router/signIn'));
+app.use('/api/upload',require('./router/upload'));
 
 module.exports=app;
