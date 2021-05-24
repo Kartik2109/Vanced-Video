@@ -56,7 +56,7 @@ class Upload extends React.Component {
     //     'Content-Type': 'application/json',
     //     'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('userTokenTime')).token
     //   }
-    }, {
+    // }, {
       onUploadProgress: ProgressEvent => {
         this.setState({
           loaded: (ProgressEvent.loaded / ProgressEvent.total * 100)
