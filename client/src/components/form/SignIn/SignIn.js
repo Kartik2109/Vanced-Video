@@ -12,8 +12,8 @@ class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
-      token: '',
-      redirect: localStorage.getItem('userTokenTime') ? true : false
+      token: ''
+      // redirect: localStorage.getItem('userTokenTime') ? true : false
     }
 
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -28,15 +28,15 @@ class SignIn extends React.Component {
         email: this.state.email,
         password: this.state.password
       }).then(res => {
-        // this.setState({
-          // token: res.data.token
-          console.log(res);
-        // });
-        // const data = {
-        //   token: this.state.token,
-        //   time: new Date().getTime()
-        // }
-        // localStorage.setItem('userTokenTime', JSON.stringify(data));
+        this.setState({
+          token: res.data.token
+          // console.log(res);
+        });
+        const data = {
+          token: this.state.token,
+          time: new Date().getTime()
+        }
+        localStorage.setItem('userTokenTime', JSON.stringify(data));
         // this.setState({
         //   redirect: true
         // });

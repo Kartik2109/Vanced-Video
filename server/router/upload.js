@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
+const thumbnailGenerator=require('../helpers/videoThumbnail');
+const port = require('../configs/default').port;
+
 const storage = multer.diskStorage({
     destination: (req, res, cb) => {
       cb(null, 'media/uploads');
@@ -21,8 +24,13 @@ const storage = multer.diskStorage({
   
 
 router.post('/',upload.single('file'),(req,res,next)=>{
+  thumbnailGenerator.generateThumbnail(
+    // /api/videos is made publically available in App.js
+    'http://127.0.0.1:' + port + '/api/videos/' + req.file.filename.replace(/ /g, '_'), 
+    req.file.filename.replace(/ /g, '_'),
+    req.userData.firstName);
 res.status(200).json({
-messgae:'Video Upload Successful'
+message:'Video Upload Successful'
 });
 });
 

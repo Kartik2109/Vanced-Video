@@ -1,9 +1,59 @@
-const express=require('express');
-const router=express.Router();
-const bcrypt =require('bcrypt');
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const User= require('../models/User');
-// The HTTP 409 Conflict response status code indicates a request conflict with current state of 
+const User = require('../models/User');
+
+router.post('/', (req, res, next) => {
+  User.find({ email: req.body.email })
+    .exec()
+    .then(user => {
+      if (user.length < 1) {
+        // 401 means unauthorized
+        return res.status(401).json({
+          message: 'Auth failed'
+        });
+      }
+      bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: 'Auth failed'
+          });
+        }
+        if (result) {
+          const token = jwt.sign({
+            userId: user[0]._id,
+            firstName: user[0].firstName,
+            lastName: user[0].lastName,
+            email: user[0].email,
+          }, require('../configs/default').secret_key,
+          {
+            expiresIn: "1h"
+          });
+          return res.status(200).json({
+            message: 'Auth successful',
+            token: token
+          });
+        }
+        res.status(401).json({
+          message: 'Auth failed'
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+});
+
+module.exports = router;
+
+
+
+ // The HTTP 409 Conflict response status code indicates a request conflict with current state of 
 // the target resource. Conflicts are most likely to occur in response to a PUT request.
 
 // 201 Created. The request has been fulfilled and resulted in a new resource being created. 
@@ -20,39 +70,4 @@ const User= require('../models/User');
 
 // The 500 Internal Server Error is a very general HTTP status code that means 
 // something has gone wrong on the web 
-// site's server but the server could not be more specific on what the exact problem is.
-
-router.post('/', (req, res, next) => {
-    User.find({ email:req.body.email })
-    .exec()
-    .then(user =>{
-        if(user.length < 1){                              
-            return res.status(401).json({
-             message:'Auth Failed'
-            });
-        }
-        bcrypt.compare(req.body.password,user[0].password,(err,result)=>{
-       if(err){
-           return res.status(401).json({
-               message:'Auth Failed'
-
-           });
-       }
-       if (result){
-           return res.status(200).json({
-         message:'Auth Successful'
-           });
-       }
-      res.status(401).json({
-      message:'Auth Failed'
-      });
-        });
-    })
-    .catch(err=>{
-        console.log(err);
-        res.status(500).json({
-            error:err
-        });
-    });
-});
-  module.exports = router;
+// site's server but the server could not be more specific on what the exact problem is. 
