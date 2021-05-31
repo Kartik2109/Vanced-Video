@@ -5,6 +5,7 @@ import './App.css';
 import Dashboard from './components/Dashboard/Dashboard';
 import SignIn from './components/form/SignIn/SignIn';
 import SignUp from './components/form/SignUp/SignUp';
+import signOut from './components/SignOut/signOut';
 import Upload from './components/Upload/Upload';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route exact path="/signIn" component={SignIn}/>
       <Route exact path="/signUp" component={SignUp}/>
       <Route exact path="/upload" component={Upload}/> 
+      <Route exact path="/signOut" component={signOut}/>
       </>
   );
 }

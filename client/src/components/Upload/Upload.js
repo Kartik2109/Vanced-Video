@@ -2,11 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import { Progress } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './Upload.css';
-// import Navbar from '../Navbar/Navbar';
+import Navbar from '../Navbar/Navbar';
 
 class Upload extends React.Component {
   state = {
@@ -70,10 +70,10 @@ class Upload extends React.Component {
   }
 
   render() {
-    // if (!localStorage.getItem('userTokenTime')) return <Redirect to="/signIn" />
+    if (!localStorage.getItem('userTokenTime')) return <Redirect to="/signIn" />
     return (
-    //   <React.Fragment>
-    //     <Navbar />
+      <React.Fragment>
+        <Navbar />
         <div className="container mt-5">
           <div className="form-group">
             <ToastContainer />
